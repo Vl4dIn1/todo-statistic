@@ -16,12 +16,17 @@ function processCommand(command) {
         case 'exit':
             process.exit(0);
             break;
+        case 'show':
+            const todos = findAllTodo();
+            printTodos(todos);
+            break;
+        case 'important':
+            const todosWithMark = printWithExclamatioMark();
+            printTodos(todosWithMark);
+            break;
         default:
             console.log('wrong command');
             break;
-        case 'show':
-            const todos = findAllTodo()
-            printTodos(todos);
     }
 }
 
@@ -55,4 +60,18 @@ function printTodos(todos){
     }
 }
 
-// TODO you can do it!
+function printWithExclamatioMark(){
+    const todos = []
+    for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+
+        const strings = file.split('\n');
+        for (let j = 0; j < strings.length; j++) {
+            const line = strings[j];
+            if (getTodoFromLine(line) && line.includes("!")) {
+                todos.push(line);
+            }
+        }
+    }
+    return todos;
+}
