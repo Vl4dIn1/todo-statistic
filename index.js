@@ -24,7 +24,7 @@ function processCommand(command) {
             printTodos(todos);
             break;
         case 'important':
-            const todosWithMark = printWithExclamatioMark();
+            const todosWithMark = printWithExclamationMark();
             printTodos(todosWithMark);
             break;
         case 'user':
@@ -32,7 +32,7 @@ function processCommand(command) {
             printTodos(todoWithUser);
             break;
         case 'sort':
-            const argum = parts[2]
+            const argum = parts[1]
             let sortedTodos = []
             switch (argum) {
                 case 'important':
@@ -164,7 +164,7 @@ function sortByImportance() {
             if (count1 < count2) {
                 let temp = todos[j];
                 todos[j] = todos[j + 1];
-                todos[j + 1] = todos;
+                todos[j + 1] = temp;
             }
         }
     }
