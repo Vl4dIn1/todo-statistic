@@ -12,7 +12,10 @@ function getFiles() {
 }
 
 function processCommand(command) {
-    switch (command) {
+    const parts = command.split(' ')
+    const action = parts[0]
+    const arg = parts[1]
+    switch (action) {
         case 'exit':
             process.exit(0);
             break;
@@ -23,6 +26,10 @@ function processCommand(command) {
         case 'important':
             const todosWithMark = printWithExclamatioMark();
             printTodos(todosWithMark);
+            break;
+        case 'user':
+            const todoWithUser = printWithUser(arg);
+            printTodos(todoWithUser);
             break;
         default:
             console.log('wrong command');
@@ -70,6 +77,30 @@ function printWithExclamatioMark(){
             const line = strings[j];
             if (getTodoFromLine(line) && line.includes("!")) {
                 todos.push(line);
+            }
+        }
+    }
+    return todos;
+}
+
+function printWithUser(arg){
+    const todos = []
+    const searchUser = arg.toLowerCase()
+    for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        const strings = file.split('\n');
+
+        for (let j = 0; j < strings.length; j++) {
+            const line = strings[j];
+            const todoLine = getTodoFromLine(line);
+            
+            if (todoLine){
+                const lowerLine = line.toLowerCase()
+                const afterTodo = lowerLine.substring(lowerLine.indexOf('todo') + 4).trim();
+                
+                if (afterTodo.startsWith(searchUser + ';')) {
+                    todos.push(line);
+                }
             }
         }
     }
