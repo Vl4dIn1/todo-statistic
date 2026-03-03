@@ -35,9 +35,16 @@ function processCommand(command) {
             const argum = parts[1]
             let sortedTodos = []
             switch (argum) {
-                case 'important':
-                    const todos = findAllTodo();
-                    sortedTodos = sortByImportance(todos);
+                case 'importance':
+                    sortedTodos = sortByImportance();
+                    printTodos(sortedTodos);
+                    break;
+                case 'user':
+                    sortedTodos = groupByUser();
+                    printTodos(sortedTodos);
+                    break;
+                case 'date':
+                    sortedTodos = sortByDate();
                     printTodos(sortedTodos);
                     break;
                 default:
@@ -124,7 +131,7 @@ function printWithUser(arg) {
 function findExclamationMarkInLine(line) {
     let count = 0;
     for (let i = 0; i < line.length; i++) {
-        if (line[i] === 'i') {
+        if (line[i] === '!') {
             count++;
         }
     }
@@ -208,5 +215,34 @@ function groupByUser() {
             result.push(notAuthor[j]);
         }
     }
+    return result;
+}
+
+function sortByDate() {
+    const todos = findAllTodo();
+    
+    const witDate = [];
+    const withoutDate = [];
+    
+    for (let i = 0; i < todos.length; i++) {
+        const todo = todos[i];
+        const date = getDate(todo);
+        if (date) {
+            witDate.push({ line: todo, date: date });
+        } else {
+            withoutDate.push(todo);
+        }
+    }
+
+    witDate.sort((a, b) => b.date.localeCompare(a.date));
+
+    const result = [];
+    for (let i = 0; i < witDate.length; i++) {
+        result.push(witDate[i].line);
+    }
+    for (let i = 0; i < withoutDate.length; i++) {
+        result.push(withoutDate[i]);
+    }
+
     return result;
 }
