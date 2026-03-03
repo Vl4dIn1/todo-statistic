@@ -152,8 +152,8 @@ function getDate(line) {
     const semicolonPos = withoutTodo.indexOf(';');
     if (semicolonPos > 0) {
         const afterAuthor = withoutTodo.substring(semicolonPos + 1).trim();
-        const secondSemicolonPos = withoutTodo.indexOf(';');
-        if (secondSemicolonPos) {
+        const secondSemicolonPos = afterAuthor.indexOf(';');
+        if (secondSemicolonPos > 0) {
             return afterAuthor.substring(0, secondSemicolonPos).trim();
         }
     }
