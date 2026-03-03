@@ -19,6 +19,39 @@ function processCommand(command) {
         default:
             console.log('wrong command');
             break;
+        case 'show':
+            const todos = findAllTodo()
+            printTodos(todos);
+    }
+}
+
+function getTodoFromLine(line) {
+    if (line.trim().startsWith('// TODO')) {
+        return line;
+    }
+    return null;
+}
+
+function findAllTodo() {
+    const todos = []
+    for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+
+        const strings = file.split('\n');
+        for (let j = 0; j < strings.length; j++) {
+            const line = strings[j];
+            if (getTodoFromLine(line)) {
+                todos.push(line);
+            }
+        }
+    }
+    return todos;
+}
+
+function printTodos(todos){
+
+    for (let i = 0; i < todos.length; i++) {
+        console.log(todos[i]);
     }
 }
 
